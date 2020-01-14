@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package concurrency_ex5;
 
 /**
@@ -10,19 +5,18 @@ package concurrency_ex5;
  * @author tangminhtin
  */
 public class RutTienThread extends Thread {
+    // Create new object of TaiKhoan and variable of soTienRut
     TaiKhoan obj;
     int soTienRut;
 
+    // Create new instance for RutTienThread
     public RutTienThread(TaiKhoan obj, int soTienRut) {
         this.obj = obj;
         this.soTienRut = soTienRut;
     }
 
-    @Override
+    // Function run to withdraw money
     public void run() {
-        super.run(); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    
-    
+        obj.rutTien(soTienRut);
+    }    
 }

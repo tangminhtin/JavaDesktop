@@ -103,6 +103,7 @@
                 <TitledBorder/>
               </Border>
               <Font PropertyName="font" name="Times New Roman" size="24" style="0"/>
+              <Color PropertyName="color" blue="0" green="0" red="ff" type="rgb"/>
             </TitledBorder>
           </Border>
         </Property>

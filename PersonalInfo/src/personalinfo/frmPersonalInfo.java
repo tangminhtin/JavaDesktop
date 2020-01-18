@@ -98,7 +98,7 @@ public class frmPersonalInfo extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Personal Information Manager");
 
-        pnlMyPersonalInfo.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(""), "My Personal Info", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Times New Roman", 0, 24))); // NOI18N
+        pnlMyPersonalInfo.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(""), "My Personal Info", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Times New Roman", 0, 24), new java.awt.Color(255, 0, 0))); // NOI18N
 
         lblname.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
         lblname.setText("Name:");

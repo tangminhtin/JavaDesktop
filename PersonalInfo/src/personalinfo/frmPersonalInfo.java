@@ -27,7 +27,12 @@ public class frmPersonalInfo extends javax.swing.JFrame {
      */
     public frmPersonalInfo() {
         initComponents();
+        
+        // Center window
         this.setLocationRelativeTo(null);
+        
+        // Set icon for window
+        this.setIconImage(getToolkit().getDefaultToolkit().getImage(getClass().getResource("user.png")));
     }
 
     /**

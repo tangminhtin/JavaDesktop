@@ -11,7 +11,7 @@ import Exceptions.WordException;
  *
  * @author tangminhtin
  */
-public final class Word {
+public final class Word implements Comparable<Word> {
 
     private int id;         // Store id of word
     private String text;    // Store text of word
@@ -72,6 +72,38 @@ public final class Word {
         } else { // Otherwise set text
             this.text = text;
         }
+    }
+
+    /**
+     * Override method compareTo
+     *
+     * @param o word object
+     * @return number
+     */
+    @Override
+    public int compareTo(Word o) {
+        //  final Word other = (Word) o;
+        return this.text.compareTo(o.getText());
+    }
+
+    /**
+     * Uses for testing. This method will compare text with text of word
+     *
+     * @param text text of input
+     * @return true or false
+     */
+    public boolean isCorrect(String text) {
+        return this.text.equals(text);
+    }
+
+    /**
+     * Override method toString()
+     *
+     * @return
+     */
+    @Override
+    public String toString() {
+        return "Word{" + "id=" + id + ", text=" + text + '}';
     }
 
 }

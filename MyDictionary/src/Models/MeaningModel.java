@@ -25,6 +25,8 @@ public class MeaningModel {
     private ResultSet resultSet;    // Create resultSet
     private final ArrayList<Meaning> meanings; // Create array meanings
 
+    private ArrayList<Meaning> result = null;   // Create array list result
+
     /**
      * Constructor for MeaningModel
      *
@@ -64,8 +66,9 @@ public class MeaningModel {
      * @param typeID id of type
      * @param newText meaning
      * @return success or error
+     * @throws Exceptions.MeaningException
      */
-    public String insert(int wordID, int typeID, String newText) {
+    public String insert(int wordID, int typeID, String newText) throws MeaningException {
         try {
             sql = "INSERT INTO `meaning`(`word_id`, `type_id`, `meaning_text`) VALUES (?,?,?)"; // sql insert
             preparedStatement = connection.prepareStatement(sql);   // Prepare statement
@@ -73,6 +76,7 @@ public class MeaningModel {
             preparedStatement.setInt(2, typeID);    // Set type id
             preparedStatement.setString(3, newText); // Set new text
             preparedStatement.execute(); // Execute query
+            this.load(); // Reload database
             return "Success";
         } catch (SQLException e) {
             return e.getMessage();  // Show error
@@ -85,14 +89,17 @@ public class MeaningModel {
      * @param wordID id of word
      * @param typeID id of type
      * @return success or error
+     * @throws Exceptions.MeaningException
      */
-    public String delete(int wordID, int typeID) {
+    public String delete(int wordID, int typeID) throws MeaningException {
         try {
             sql = "DELETE FROM `meaning` WHERE `word_id`=? AND `type_id`=?"; // sql delete
             preparedStatement = connection.prepareStatement(sql); // Prepare statement
             preparedStatement.setInt(1, wordID); // Set word id
             preparedStatement.setInt(2, typeID); // Set type id
             preparedStatement.execute();    // Execute query
+            this.load(); // Reload database
+
             return "Success";
         } catch (SQLException e) {
             return e.getMessage(); // Show error
@@ -106,15 +113,19 @@ public class MeaningModel {
      * @param typeID id of type
      * @param newText meaning
      * @return success or error
+     * @throws Exceptions.MeaningException
      */
-    public String update(int wordID, int typeID, String newText) {
+    public String update(int wordID, int typeID, String newText) throws MeaningException {
         try {
-            sql = "UPDATE `meaning` SET `meaning_text`=? WHERE `word_id`=? AND `type_id`=?"; // sql update
+            sql = "UPDATE `meaning` SET `type_id`=?, `meaning_text`=? WHERE `word_id`=? AND `type_id`=?"; // sql update
             preparedStatement = connection.prepareStatement(sql); // Prepare statement
-            preparedStatement.setString(1, newText); // Set meaning
-            preparedStatement.setInt(2, wordID); // Set word id
-            preparedStatement.setInt(3, typeID); // Set type id
+            preparedStatement.setInt(1, typeID);    // Set type id
+            preparedStatement.setString(2, newText); // Set meaning
+            preparedStatement.setInt(3, wordID); // Set word id
+            preparedStatement.setInt(4, typeID); // Set type id
             preparedStatement.execute(); // Execute query
+            this.load(); // Reload database
+
             return "Success";
         } catch (SQLException e) {
             return e.getMessage(); // Show error
@@ -134,6 +145,76 @@ public class MeaningModel {
             str += "#" + (++no) + ". " + m.getMeaning() + "\n"; // Show result
         }
         return str; // return str
+    }
+
+    /**
+     * Gets size of meaning
+     *
+     * @return size of meaning
+     */
+    public int getSize() {
+        return meanings.size();
+    }
+
+    /**
+     * Gets meanings of word when user type
+     *
+     * @param wordID id of word
+     * @return list of word
+     */
+    public ArrayList<Meaning> getMeanings(int wordID) {
+        result = new ArrayList<>(); // Init array result
+
+        for (Meaning m : meanings) {
+            if (m.getWordID() == wordID) {  // If wordID equal wordID
+                result.add(m);  // Then add it to array list
+            }
+        }
+        return result;  // Return result
+    }
+
+    /**
+     * Check meaning is exist or not
+     *
+     * @param wordID id of word
+     * @param typeID id of type
+     * @return true or false
+     */
+    public boolean isMeaningExist(int wordID, int typeID) {
+        return searchById(wordID, typeID) != null;
+    }
+
+    /**
+     * Search meaning by id word, type
+     *
+     * @param wordID id of word
+     * @param typeID id of type
+     * @return meaning or null
+     */
+    public Meaning searchById(int wordID, int typeID) {
+        for (Meaning m : meanings) {
+            // Check id word, type exist or not
+            if (m.getWordID() == wordID && m.getTypeID() == typeID) {
+                return m; // Return meaning
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Search meaning by meaning
+     *
+     * @param meaning meaning of word
+     * @return meaning or null
+     */
+    public Meaning searchByMeaning(String meaning) {
+        for (Meaning m : meanings) {
+            // Check meaning is exist or not
+            if (m.getMeaning().equals(meaning)) {
+                return m; // Return meaning
+            }
+        }
+        return null;
     }
 
 }

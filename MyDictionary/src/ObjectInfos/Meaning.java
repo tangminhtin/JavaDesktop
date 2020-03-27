@@ -6,6 +6,7 @@
 package ObjectInfos;
 
 import Exceptions.MeaningException;
+import java.util.ArrayList;
 
 /**
  *
@@ -23,6 +24,7 @@ public final class Meaning {
      * @param wordID id of word
      * @param typeID id of type
      * @param meaning meaning
+     * @throws Exceptions.MeaningException
      */
     public Meaning(int wordID, int typeID, String meaning) throws MeaningException {
         this.setWordID(wordID);
@@ -43,6 +45,7 @@ public final class Meaning {
      * Sets id of word
      *
      * @param wordID id of word
+     * @throws Exceptions.MeaningException
      */
     public void setWordID(int wordID) throws MeaningException {
         if (wordID < 0) { // If wordID < 0, then show error
@@ -97,5 +100,5 @@ public final class Meaning {
             this.meaning = meaning;
         }
     }
-
+    
 }

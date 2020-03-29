@@ -22,6 +22,7 @@ public class UpdateWord extends javax.swing.JFrame {
     WordModel wm;   // Create wm
     EnEnDictionary parent;  // Create parent
     int wordID; // Store word id
+    int oldTypeID;
 
     /**
      * Creates new form UpdateWord
@@ -30,28 +31,27 @@ public class UpdateWord extends javax.swing.JFrame {
      * @param mm meaning model
      * @param tm type model
      * @param wm word model
-     * @param wordID
      */
-    public UpdateWord(EnEnDictionary parent, TypeModel tm, MeaningModel mm, WordModel wm, int wordID) {
+    public UpdateWord(EnEnDictionary parent, TypeModel tm, MeaningModel mm, WordModel wm) {
         initComponents();
         this.setLocationRelativeTo(null); // Set center frame
+        // Set logo frame
+        this.setIconImage(getToolkit().getDefaultToolkit().getImage(getClass().getResource("../img/logo.png")));
 
         this.tm = tm;   // Set tm
         this.mm = mm;   // Set mm
         this.wm = wm;   // Set wm
         this.parent = parent;  // Set parent
-        this.wordID = wordID;   // Set word id
-
-        loadOldWord(); // Reset frame
-
     }
 
     /**
      * Load old word
+     * @param wID
      */
-    public void loadOldWord() {
+    public void loadOldWord(int wID) {
+        this.wordID = wID;
         Word word = wm.searchById(wordID);  // Get word by id
-        
+
         txtWord.setText(word.getText());    // Set word text
         ArrayList<Meaning> listOfMeanings = mm.getMeanings(wordID); // Get meaning by id
         Meaning m = listOfMeanings.get(0);  // Get first meaning  
@@ -64,10 +64,10 @@ public class UpdateWord extends javax.swing.JFrame {
             cmbType.addItem(t); // Add type to combo box
         }
 
-        int typeID = m.getTypeID(); // Get type id
-        ObjectInfos.Type type = tm.searchById(typeID); // Get type by search id
+        oldTypeID = m.getTypeID(); // Get type id
+        ObjectInfos.Type type = tm.searchById(oldTypeID); // Get type by search id
         String typeText = type.getText();   // Get type text
-        
+
         cmbType.setSelectedItem(typeText);  // Set selected id
     }
 
@@ -91,8 +91,8 @@ public class UpdateWord extends javax.swing.JFrame {
         btnCancel = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
 
-        setTitle("Add New Word");
-        setName("frmAddNewWord"); // NOI18N
+        setTitle("Update Word");
+        setName("frmUpdateWord"); // NOI18N
 
         lblAddNewWord.setFont(new java.awt.Font("Lucida Grande", 1, 36)); // NOI18N
         lblAddNewWord.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -187,16 +187,17 @@ public class UpdateWord extends javax.swing.JFrame {
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         try {
             String wordText = txtWord.getText(); // Get new word
+
+//            Word word = wm.searchByFullWord(wordText);
+//            Meaning meaning = mm.searchById(wordID, wordID);
             wm.update(wordID, wordText);        // Update word into database
 
             String typeText = String.valueOf(cmbType.getSelectedItem());    // Get type was selected
             ObjectInfos.Type type = tm.searchByName(typeText);  // Get object type by search
-            int typeID = type.getId();  // Get id of type
+            int newTypeID = type.getId();  // Get id of type
 
-            String meaning = txtaMeaning.getText(); // Get meaning
-            System.out.println(wordID + " - " + typeID);
-            System.out.println(meaning);
-            mm.update(wordID, typeID, meaning); // Update meaning of new word into database
+            String newMeaning = txtaMeaning.getText(); // Get meaning
+            mm.update(wordID, oldTypeID, newTypeID, newMeaning); // Update meaning of new word into database
 
             this.setVisible(false);     // Hide frame NewWord
             parent.loadDictionary();    // Load dictionary from main frame

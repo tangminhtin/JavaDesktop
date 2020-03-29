@@ -28,14 +28,18 @@ import javax.swing.JOptionPane;
  */
 public class EnEnDictionary extends javax.swing.JFrame {
 
-    DBConnection db;    // Create db
-    Connection connection; // Create connection
-    TypeModel tm;       // Create tm
-    MeaningModel mm;    // Create mm
-    WordModel wm;       // Create wm
+    DBConnection db;    // Declare db
+    Connection connection; // Declare connection
+    TypeModel tm;       // Declare tm
+    MeaningModel mm;    // Declare mm
+    WordModel wm;       // Declare wm
     NewWord frmNewWord = null; // Create frame NewWord
     UpdateWord frmUpdateWord = null; // Create frame UpdateWord
     int selectedWordID = -1;    // Store selected id of word
+
+    ArrayList<Word> theTest = null;     // Declare the Test
+    ArrayList<String> userInput = null; // Declare userInput
+    TestCreator frmTestCreator = null; // Declare frmTestCreator
 
     /**
      * Creates new form EnEnDictionary
@@ -47,6 +51,9 @@ public class EnEnDictionary extends javax.swing.JFrame {
     public EnEnDictionary() throws TypeException, MeaningException, WordException {
         initComponents();
         this.setLocationRelativeTo(null);   // Set center frame
+        // Set logo frame
+        this.setIconImage(getToolkit().getDefaultToolkit().getImage(getClass().getResource("../img/logo.png")));
+
         try {
             // Create models
             db = new DBConnection();        // Initialize db
@@ -54,6 +61,9 @@ public class EnEnDictionary extends javax.swing.JFrame {
             tm = new TypeModel(connection);     // Initialize tm
             mm = new MeaningModel(connection);  // Initialize mm
             wm = new WordModel(connection, tm, mm); // Initialize wm
+
+            theTest = new ArrayList<>(); // Initialize theTest
+            userInput = new ArrayList<>();  // Initialize userInput
 
             // Load data from database
             tm.load();  // Load type
@@ -84,7 +94,7 @@ public class EnEnDictionary extends javax.swing.JFrame {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 String v = (String) value; // Get value of item
-                if (v.startsWith("---------------")) {
+                if (v.startsWith("--------------- ")) {
                     return super.getListCellRendererComponent(list, value, index, false, false); //To change body of generated methods, choose Tools | Templates. 
                 }
                 return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus); //To change body of generated methods, choose Tools | Templates.
@@ -263,11 +273,13 @@ public class EnEnDictionary extends javax.swing.JFrame {
                 int option = JOptionPane.showConfirmDialog(this, "Do you really want to delete word '" + wordText + "'?");
                 if (option == 0) {  // Check on Yes button
                     wm.delete(selectedWordID);  // Delete word
-                    loadDictionary();
+                    mm.delete(selectedWordID);  // Delete Meaning
+                    loadDictionary();           // Load dictionary
+                    tpContent.setText("");      // Set tpContent is empty
                     JOptionPane.showMessageDialog(this, "The word '" + wordText + "' is deleted!");
                 }
             }
-        } catch (WordException ex) {
+        } catch (WordException | MeaningException ex) {
             System.out.println(ex); // Show error
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
@@ -282,10 +294,10 @@ public class EnEnDictionary extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "You must select a word");  // Show error
         } else {
             if (frmUpdateWord == null) {    // If frame update is null, then create new frame 
-                frmUpdateWord = new UpdateWord(this, tm, mm, wm, selectedWordID);
+                frmUpdateWord = new UpdateWord(this, tm, mm, wm);   // Create new frame frmUpdateWord
             }
 
-            frmUpdateWord.loadOldWord();    // Load old word
+            frmUpdateWord.loadOldWord(selectedWordID);    // Load old word
             frmUpdateWord.setVisible(true); // Show frame update
         }
 
@@ -297,7 +309,12 @@ public class EnEnDictionary extends javax.swing.JFrame {
      * @param evt click
      */
     private void btnTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTestActionPerformed
-        // TODO add your handling code here:
+        if (frmTestCreator == null) { // If frame new word is null, then create new frame 
+            frmTestCreator = new TestCreator(this, wm, theTest, userInput); // Create new frame frmTestCreator
+        }
+
+        frmTestCreator.refresh(); // Reset frame new word
+        frmTestCreator.setVisible(true);    // Show frame
     }//GEN-LAST:event_btnTestActionPerformed
 
     /**
@@ -342,11 +359,7 @@ public class EnEnDictionary extends javax.swing.JFrame {
             public void run() {
                 try {
                     new EnEnDictionary().setVisible(true);
-                } catch (TypeException ex) {
-                    Logger.getLogger(EnEnDictionary.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (MeaningException ex) {
-                    Logger.getLogger(EnEnDictionary.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (WordException ex) {
+                } catch (TypeException | MeaningException | WordException ex) { // Show error
                     Logger.getLogger(EnEnDictionary.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }

@@ -50,6 +50,7 @@ public class MeaningModel {
         sql = "SELECT * FROM `meaning`";    // SQL select all
         preparedStatement = connection.prepareStatement(sql);   // Prepare statement
         resultSet = preparedStatement.executeQuery();   // Execute query
+        meanings.clear();   // Clear meanings
 
         while (resultSet.next()) {
             int wordID = resultSet.getInt("word_id");   // Get word id
@@ -87,16 +88,14 @@ public class MeaningModel {
      * Delete meaning
      *
      * @param wordID id of word
-     * @param typeID id of type
      * @return success or error
      * @throws Exceptions.MeaningException
      */
-    public String delete(int wordID, int typeID) throws MeaningException {
+    public String delete(int wordID) throws MeaningException {
         try {
-            sql = "DELETE FROM `meaning` WHERE `word_id`=? AND `type_id`=?"; // sql delete
+            sql = "DELETE FROM `meaning` WHERE `word_id`=?"; // sql delete
             preparedStatement = connection.prepareStatement(sql); // Prepare statement
             preparedStatement.setInt(1, wordID); // Set word id
-            preparedStatement.setInt(2, typeID); // Set type id
             preparedStatement.execute();    // Execute query
             this.load(); // Reload database
 
@@ -110,19 +109,20 @@ public class MeaningModel {
      * Update meaning
      *
      * @param wordID id of word
-     * @param typeID id of type
+     * @param oldTypeID id of type
+     * @param newTypeID
      * @param newText meaning
      * @return success or error
      * @throws Exceptions.MeaningException
      */
-    public String update(int wordID, int typeID, String newText) throws MeaningException {
+    public String update(int wordID, int oldTypeID, int newTypeID, String newText) throws MeaningException {
         try {
             sql = "UPDATE `meaning` SET `type_id`=?, `meaning_text`=? WHERE `word_id`=? AND `type_id`=?"; // sql update
             preparedStatement = connection.prepareStatement(sql); // Prepare statement
-            preparedStatement.setInt(1, typeID);    // Set type id
+            preparedStatement.setInt(1, newTypeID);    // Set type id
             preparedStatement.setString(2, newText); // Set meaning
             preparedStatement.setInt(3, wordID); // Set word id
-            preparedStatement.setInt(4, typeID); // Set type id
+            preparedStatement.setInt(4, oldTypeID); // Set type id
             preparedStatement.execute(); // Execute query
             this.load(); // Reload database
 

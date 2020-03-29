@@ -52,6 +52,7 @@ public class TypeModel {
         sql = "SELECT * FROM `type`"; // SQL select all
         preparedStatement = connection.prepareStatement(sql); // Prepare statement
         resultSet = preparedStatement.executeQuery(); // Execute query
+        types.clear();  // Clear types
 
         while (resultSet.next()) {
             int id = resultSet.getInt("type_id");// Get type id

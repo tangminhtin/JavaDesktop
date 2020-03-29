@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public class NewWord extends javax.swing.JFrame {
 
-    TypeModel tm;   // Create tm
+    TypeModel tm;   // Declare tm
     MeaningModel mm;    // Create mm
     WordModel wm;   // Create wm
     EnEnDictionary parent;  // Create parent
@@ -33,6 +33,8 @@ public class NewWord extends javax.swing.JFrame {
     public NewWord(EnEnDictionary parent, TypeModel tm, MeaningModel mm, WordModel wm) {
         initComponents();
         this.setLocationRelativeTo(null); // Set center frame
+        // Set logo frame
+        this.setIconImage(getToolkit().getDefaultToolkit().getImage(getClass().getResource("../img/logo.png")));
 
         this.tm = tm;   // Set tm
         this.mm = mm;   // Set mm

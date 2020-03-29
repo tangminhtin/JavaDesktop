@@ -67,6 +67,7 @@ public class WordModel {
         preparedStatement = connection.prepareStatement(sql); // Prepare statement
         resultSet = preparedStatement.executeQuery();// Execute query
 
+        words.clear();  // Clear words
         while (resultSet.next()) {
             int id = resultSet.getInt("word_id");   // Get word id
             String text = resultSet.getString("word_text"); // Get word text
@@ -263,8 +264,9 @@ public class WordModel {
             if (oldWord.charAt(0) != newWord.charAt(0)) { // If first character of oldWord not equal to first character of newWord
                 dict.add("--------------- " + newWord.toUpperCase().charAt(0) + " ---------------"); // Add it to array list
             }
-            oldWord = newWord;  // Update old word
+
             dict.add(newWord);  // Add newWord to array list
+            oldWord = newWord;  // Update old word
         }
 
         return dict; // Return list of dict

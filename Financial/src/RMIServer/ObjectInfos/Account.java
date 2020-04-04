@@ -46,6 +46,7 @@ public final class Account implements Serializable, Comparable<Account> {
      * set id
      *
      * @param aId id
+     * @throws RMIServer.Exceptions.AccountException
      */
     public void setaId(int aId) throws AccountException {
         if (aId < 0) {
@@ -68,6 +69,7 @@ public final class Account implements Serializable, Comparable<Account> {
      * set username
      *
      * @param username username
+     * @throws RMIServer.Exceptions.AccountException
      */
     public void setUsername(String username) throws AccountException {
         if (username.trim().isEmpty()) {
@@ -91,6 +93,7 @@ public final class Account implements Serializable, Comparable<Account> {
      * set password
      *
      * @param password password
+     * @throws RMIServer.Exceptions.AccountException
      */
     public void setPassword(String password) throws AccountException {
         if (password.trim().isEmpty()) {

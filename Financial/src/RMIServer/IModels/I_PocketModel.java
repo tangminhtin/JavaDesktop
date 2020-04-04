@@ -29,11 +29,12 @@ public interface I_PocketModel extends Remote {
      *
      * @param money money
      * @param description description
+     * @param time time
      * @param aId id account
      * @return success or fail
      * @throws RemoteException RemoteException
      */
-    public String insert(long money, String description, int aId) throws RemoteException;
+    public String insert(long money, String description, Date time, int aId) throws RemoteException;
 
     /**
      * delete pocket

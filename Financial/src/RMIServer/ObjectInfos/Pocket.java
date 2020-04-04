@@ -7,7 +7,6 @@ package RMIServer.ObjectInfos;
 
 import RMIServer.Exceptions.PocketException;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
@@ -77,9 +76,14 @@ public final class Pocket implements Serializable, Comparable<Pocket> {
      * set money
      *
      * @param money
+     * @throws RMIServer.Exceptions.PocketException
      */
-    public void setMoney(long money) {
-        this.money = money;
+    public void setMoney(long money) throws PocketException {
+        if (money == 0) {
+            throw new PocketException("The payment or receive can't be zero");
+        } else {
+            this.money = money;
+        }
     }
 
     /**
@@ -119,9 +123,14 @@ public final class Pocket implements Serializable, Comparable<Pocket> {
      * set time
      *
      * @param time time
+     * @throws RMIServer.Exceptions.PocketException
      */
-    public void setTime(Date time) {
-        this.time = time;
+    public void setTime(Date time) throws PocketException {
+        if (time == null) {
+            throw new PocketException("The time of action can't be null");
+        } else {
+            this.time = time;
+        }
     }
 
     /**

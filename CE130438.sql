@@ -2,8 +2,8 @@
 -- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Apr 02, 2020 at 05:45 AM
+-- Host: localhost
+-- Generation Time: Apr 04, 2020 at 04:56 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 5.6.40
 
@@ -73,10 +73,16 @@ INSERT INTO `pocket` (`p_id`, `p_money`, `p_description`, `p_time`, `a_id`) VALU
 (6, -15000, 'Breadfast', '2020-04-01 16:29:47', 3),
 (7, -20000, 'Mua banh', '2020-04-01 23:47:10', 6),
 (8, -1909000, 'Shopping', '2020-04-03 00:12:12', 6),
-(9, -505000, 'Mua hoa', '2020-04-03 00:00:00', 6),
-(10, 800000, 'Được lì xì', '2020-03-31 00:00:00', 6),
-(11, 8090000, 'Được lì xì của mẹ', '2020-04-02 00:00:00', 6),
-(12, -899000, 'Mua gấu tặng ghệ', '2020-03-31 00:00:00', 6);
+(9, -505000, 'Mua hoa', '2020-04-03 00:00:06', 6),
+(10, 800000, 'Được lì xì', '2020-03-31 02:00:00', 6),
+(11, 99999000, 'Lanh luong', '2020-04-04 00:03:00', 6),
+(12, -899000, 'Mua gấu tặng ghệ', '2020-03-31 03:00:00', 6),
+(13, -800000, 'Mua hoa tặng gấu', '2020-04-04 00:00:04', 6),
+(14, 90999000, 'Thưởng tết', '2020-04-04 00:12:12', 6),
+(15, -50000, 'Đi ăn với ghệ Vinh', '2020-04-04 00:00:05', 6),
+(20, -506600, 'mua banh', '2020-04-04 00:00:00', 6),
+(31, 3434, 'aafs', '2020-04-04 00:00:00', 6),
+(32, 25050000, 'Lanh Thuong', '2020-04-05 00:00:00', 6);
 
 --
 -- Indexes for dumped tables
@@ -109,7 +115,7 @@ ALTER TABLE `account`
 -- AUTO_INCREMENT for table `pocket`
 --
 ALTER TABLE `pocket`
-  MODIFY `p_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Pocket''s ID', AUTO_INCREMENT=13;
+  MODIFY `p_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Pocket''s ID', AUTO_INCREMENT=33;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

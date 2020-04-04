@@ -76,18 +76,20 @@ public class PocketModel extends UnicastRemoteObject implements I_PocketModel {
      *
      * @param money money
      * @param description description
+     * @param time time
      * @param aId id account
      * @return success or fail
      * @throws RemoteException RemoteException
      */
     @Override
-    public String insert(long money, String description, int aId) throws RemoteException {
+    public String insert(long money, String description, Date time, int aId) throws RemoteException {
         try {
-            sql = "INSERT INTO `pocket`(`p_money`, `p_description`, `a_id`) VALUES (?,?,?)"; // sql query
+            sql = "INSERT INTO `pocket`(`p_money`, `p_description`, `p_time`, `a_id`) VALUES (?,?,?,?)"; // sql query
             preparedStatement = connection.prepareStatement(sql);// preparedStatement
             preparedStatement.setLong(1, money); // set money
             preparedStatement.setString(2, description); // set description
-            preparedStatement.setInt(3, aId); // set id account
+            preparedStatement.setDate(3, new java.sql.Date(time.getTime())); // set time
+            preparedStatement.setInt(4, aId); // set id account
             preparedStatement.execute();// excute query
             this.load(); // Reload data
             return "Success";
@@ -190,7 +192,7 @@ public class PocketModel extends UnicastRemoteObject implements I_PocketModel {
     public ArrayList<Pocket> search(int aId, Date date) throws RemoteException {
         result.clear(); // clear old data
         for (Pocket p : pockets) {
-            if ((p.getaId() == aId) && p.getTime().equals(date)) {
+            if ((p.getaId() == aId) && compare(p.getTime(), date) == 0) {
                 result.add(p); // add p to array list
             }
         }
@@ -210,7 +212,7 @@ public class PocketModel extends UnicastRemoteObject implements I_PocketModel {
     public ArrayList<Pocket> search(int aId, Date fromDate, Date toDate) throws RemoteException {
         result.clear(); // clear old data
         for (Pocket p : pockets) {
-            if ((p.getaId() == aId) && !(p.getTime().before(fromDate) || p.getTime().after(toDate))) {
+            if ((p.getaId() == aId) && compare(fromDate, p.getTime()) <= 0 && compare(p.getTime(), toDate) <= 0) {
                 result.add(p); // add p to array list
             }
         }
@@ -288,7 +290,7 @@ public class PocketModel extends UnicastRemoteObject implements I_PocketModel {
         long income = 0; // store income
         for (Pocket p : pockets) {
             // check id and income, date
-            if ((p.getaId() == aId) && p.getMoney() >= 0 && p.getTime().equals(date)) {
+            if ((p.getaId() == aId) && p.getMoney() >= 0 && compare(p.getTime(), date) == 0) {
                 income += p.getMoney(); // Calculate income
             }
         }
@@ -309,7 +311,7 @@ public class PocketModel extends UnicastRemoteObject implements I_PocketModel {
         long income = 0; // store income
         for (Pocket p : pockets) {
             // check id and income, fromDate, toDate
-            if ((p.getaId() == aId) && p.getMoney() >= 0 && !(p.getTime().before(fromDate) || p.getTime().after(toDate))) {
+            if ((p.getaId() == aId) && p.getMoney() >= 0 && compare(fromDate, p.getTime()) <= 0 && compare(p.getTime(), toDate) <= 0) {
                 income += p.getMoney(); // Calculate income
             }
         }
@@ -347,7 +349,7 @@ public class PocketModel extends UnicastRemoteObject implements I_PocketModel {
         long outcome = 0; // store outcome
         for (Pocket p : pockets) {
             // check id, outcome, date
-            if ((p.getaId() == aId) && p.getMoney() < 0 && p.getTime().equals(date)) {
+            if ((p.getaId() == aId) && p.getMoney() < 0 && compare(p.getTime(), date) == 0) {
                 outcome += p.getMoney(); // Calculate outcome
             }
         }
@@ -368,7 +370,7 @@ public class PocketModel extends UnicastRemoteObject implements I_PocketModel {
         long outcome = 0; // store outcome
         for (Pocket p : pockets) {
             // check id, outcome, fromDate, toDate
-            if ((p.getaId() == aId) && p.getMoney() < 0 && !(p.getTime().before(fromDate) || p.getTime().after(toDate))) {
+            if ((p.getaId() == aId) && p.getMoney() < 0 && compare(fromDate, p.getTime()) <= 0 && compare(p.getTime(), toDate) <= 0) {
                 outcome += p.getMoney(); // Calculate outcome
             }
         }
@@ -394,6 +396,26 @@ public class PocketModel extends UnicastRemoteObject implements I_PocketModel {
     @Override
     public ArrayList<Pocket> getAll() throws RemoteException {
         return this.pockets;
+    }
+
+    /**
+     * compare date
+     * @param d1 date 1
+     * @param d2 date 2
+     * @return
+     */
+    public static int compare(Date d1, Date d2) {
+        int d1d = d1.getDate(); // get day 1
+        int d1m = d1.getMonth(); // get month 1
+        int d1y = d1.getYear(); // get year 1
+
+        int d2d = d2.getDate(); // get day 2
+        int d2m = d2.getMonth(); // get month 2
+        int d2y = d2.getYear(); // get year 2
+
+        Date dt1 = new Date(d1y, d1m, d1d);
+        Date dt2 = new Date(d2y, d2m, d2d);
+        return dt1.compareTo(dt2); // compare 2 date
     }
 
 }

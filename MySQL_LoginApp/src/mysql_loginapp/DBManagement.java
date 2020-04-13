@@ -15,7 +15,7 @@ import java.sql.SQLException;
  */
 public class DBManagement {
 
-    private final String URL = "jdbc:mysql://localhost:3306/CE130438";  // Store database
+    private final String URL = "jdbc:mysql://localhost:3306/aaaaaa";  // Store database
     private final String UID = "root";  // Store user
     private final String PWD = "";      // Store password
     private Connection connection = null;   // Create connection

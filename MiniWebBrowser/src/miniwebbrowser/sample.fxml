@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.web.WebView?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="miniwebbrowser.Controller">
+    <top>
+        <ToolBar prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #0000ff;" BorderPane.alignment="CENTER">
+            <items>
+                <Button fx:id="btnGo" mnemonicParsing="false" onAction="#go" style="-fx-background-color: #00ff00;" text="GO" />
+                <TextField fx:id="txtAddress" prefHeight="26.0" prefWidth="545.0" />
+            </items>
+        </ToolBar>
+    </top>
+    <center>
+        <WebView fx:id="wvWeb" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+    </center>
+</BorderPane>
